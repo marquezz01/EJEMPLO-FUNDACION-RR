@@ -1,0 +1,864 @@
+/* 📑 Estructura y estilos principales */
+:root {
+    --page-bg: #ffffff; /* Fondo blanco como solicitado */
+    --surface: #ffffff;
+    --text: #090d1b;
+    --muted: #6b6b6b;
+    --accent: #e52423; /* Rojo principal */
+    --accent-dark: #c01f1e; /* Rojo más oscuro para variaciones */
+
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+
+    --radius: 8px;
+    --shadow-1: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-2: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Reset y estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Habilitar scroll suave en toda la página */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--page-bg);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+/* Contenedor general (.wrap) */
+.container {
+    width: 100%;
+    max-width: 1280px; /* Aumentamos el ancho para separar los elementos */
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+/* 🧭 Header y navegación */
+.site-header {
+    /* Menú estático con fondo blanco */
+    background-color: var(--surface);
+    box-shadow: var(--shadow-1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: var(--spacing-sm) 0;
+    transition: transform 0.4s ease, background-color 0.4s ease; /* Añadimos transform a la transición */
+}
+
+/* Clase para ocultar el header */
+.site-header.header-hidden {
+    transform: translateY(-100%);
+}
+
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px; /* Añadimos padding para el fondo */
+    border-radius: var(--radius); /* Redondeamos las esquinas */
+    transition: background-color 0.4s ease; /* Transición para el fondo */
+}
+
+.logo-mark {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius);
+    transition: filter 0.4s ease; /* Transición para el filtro del logo */
+    object-fit: cover; /* Asegura que la imagen se ajuste bien */
+}
+
+.brand-text .brand-sub {
+    font-family: 'Josefin Sans', sans-serif;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-size: 0.8rem;
+    transition: color 0.4s ease; /* Transición para el color */
+    letter-spacing: 1px;
+}
+
+.brand-text .brand-name {
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text);
+    font-size: 1rem;    
+    transition: color 0.4s ease; /* Transición para el color */
+    line-height: 1.2;
+}
+
+.main-nav .nav-list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 24px;
+}
+
+.nav-list .nav-item {
+    position: relative;
+}
+
+.nav-list .nav-link {
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: uppercase;
+    padding: 8px 4px;
+    position: relative; /* Necesario para el pseudo-elemento ::after */
+    transition: color 0.3s ease;
+}
+
+/* Efecto de subrayado animado */
+.nav-list .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent);
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+}
+
+.nav-list .nav-link:hover {
+    color: var(--accent);
+}
+
+.nav-list .nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.nav-item.donate a {
+    background-color: var(--accent); /* Fondo rojo para el botón */
+    color: white; /* Texto blanco para que contraste */
+    display: inline-block;
+    padding: 10px 24px;
+    border-radius: 999px;
+}
+
+.nav-item.donate a:hover {
+    color: white; /* Corregido: El texto se mantiene blanco para mejor contraste */
+    background-color: var(--accent-dark);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--shadow-1);
+}
+
+/* Submenú */
+.has-submenu > a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.caret {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--muted);
+    transition: transform 0.3s ease, border-top-color 0.4s ease;
+    transition: transform 0.3s ease;
+}
+.has-submenu:hover .caret {
+    transform: rotate(180deg);
+}
+.submenu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--surface);
+    list-style: none;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-2);
+    min-width: 220px;
+    opacity: 0;
+    pointer-events: none; /* Usamos pointer-events en lugar de visibility */
+    transform: translate(-50%, 10px); /* Posición inicial para la animación */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    margin-top: 10px;
+}
+.has-submenu:hover .submenu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0); /* Posición final */
+}
+.has-submenu:hover > .nav-link {
+    color: var(--accent); /* Mantiene el enlace padre resaltado */
+}
+.submenu .nav-link {
+    display: block;
+    font-size: 14px;
+    text-transform: none;
+    font-weight: 600;
+    padding: 10px 12px;
+    border-radius: 4px;
+}
+.submenu .nav-link::after {
+    display: none; /* Ocultamos el efecto de subrayado en el submenú */
+}
+.submenu .nav-link:hover {
+    background-color: rgba(229, 36, 35, 0.1);
+    color: var(--accent);
+    /* No se necesita transform aquí */
+}
+
+/* ✨ Efecto Hover para el logo/marca */
+.brand:hover {
+    background-color: var(--accent);
+}
+
+/* Cambia el color del texto y logo a blanco en hover del logo/marca */
+.brand:hover .brand-text .brand-sub,
+.brand:hover .brand-text .brand-name {
+    color: white;
+}
+
+.brand:hover .logo-mark {
+    filter: brightness(0) invert(1); /* Convierte el logo a blanco */
+}
+
+/* 📱 Navegación móvil */
+.burger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 30px;
+    height: 24px;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 0;
+}
+.burger-bar {
+    width: 100%;
+    height: 3px;
+    background-color: var(--text);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+}
+
+/* Animación del icono de hamburguesa a "X" */
+.burger.active .burger-bar:nth-child(1) {
+    transform: translateY(8.5px) rotate(45deg);
+}
+.burger.active .burger-bar:nth-child(2) {
+    opacity: 0;
+}
+.burger.active .burger-bar:nth-child(3) {
+    transform: translateY(-8.5px) rotate(-45deg);
+}
+
+.mobile-menu {
+    display: none; /* Oculto por defecto */
+}
+
+/* 📄 Secciones principales (.page-section) */
+.page-section {
+    margin: 48px 0;
+}
+.section-inner {
+    background-color: var(--surface);
+    border-radius: var(--radius);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-1);
+}
+.page-section h2 {
+    font-size: 22px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-align: center;
+}
+.page-section p {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+/* 📍 Footer */
+.site-footer {
+    background-color: #1c1c1c; /* Un gris oscuro más suave */
+    color: var(--muted);
+    padding-top: var(--spacing-xl);
+    margin-top: 60px;
+}
+
+.footer-main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    padding-bottom: var(--spacing-xl);
+}
+
+.footer-column .footer-heading {
+    color: white;
+    font-family: 'Josefin Sans', sans-serif;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-md);
+    letter-spacing: 1px;
+}
+
+.footer-column p {
+    margin-bottom: var(--spacing-md);
+}
+
+.footer-nav {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.footer-nav a {
+    padding: 4px 0;
+    transition: color 0.3s ease;
+}
+
+.footer-nav a:hover {
+    color: var(--accent);
+}
+
+.social-links {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.social-links a {
+    color: var(--accent); /* Cambiamos el color por defecto a rojo */
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+.social-links a:hover {
+    transform: scale(1.1);
+    color: var(--accent-dark); /* Usamos el rojo oscuro para el hover */
+}
+.social-links svg {
+    width: 24px;
+    height: 24px;
+}
+
+.footer-bottom-bar {
+    border-top: 1px solid #333;
+    padding: var(--spacing-md) 0;
+    text-align: center;
+    font-size: 0.9rem;
+}
+.footer-bottom-bar p {
+    font-weight: 700;
+}
+.footer-bottom-bar .brand-highlight {
+    font-weight: 700;
+    color: white;
+}
+
+.footer-brand-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: var(--spacing-md);
+}
+
+.footer-logo {
+    width: 48px;
+    height: 48px;
+    /* Asumimos que tendrás un logo en blanco para el footer */
+    filter: brightness(0) invert(1); 
+}
+
+.footer-brand-text .footer-brand-sub,
+.footer-brand-text .footer-brand-name {
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+.footer-brand-sub {
+    font-family: 'Josefin Sans', sans-serif;
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+.footer-brand-name {
+    font-weight: 700;
+    color: white;
+    font-size: 1rem;
+}
+
+.footer-description {
+    font-size: 0.9rem;
+    color: #d9d9d9; /* Un gris más claro para suavizar el contraste */
+}
+
+.footer-nav {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+/* Centrado de la columna de redes sociales */
+.footer-social-column {
+    text-align: left; /* Alineamos el contenido a la izquierda */
+}
+.social-links {
+    /* Usamos flexbox para alinear iconos y botón */
+    display: flex;
+    justify-content: flex-start; /* Alinea los elementos a la izquierda */
+    align-items: center;     /* Alinea los elementos verticalmente */
+    gap: 12px;               /* Espacio uniforme entre todos los elementos */
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-md); /* Añadimos espacio debajo de los iconos */
+}
+
+/* Botón de donaciones en el footer */
+.footer-donate-btn {
+    background-color: white;
+    color: var(--accent);
+    padding: 5px 5px; /* Padding ajustado para alinear altura con iconos */
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1.5; /* Asegura la alineación vertical del texto */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+.footer-donate-btn:hover {
+    background-color: var(--accent);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* 🎬 HERO CARRUSEL INTERACTIVO */
+.hero.swiper-container {
+    position: relative;
+    min-height: 80vh; /* Altura del 80% de la ventana */
+    color: white;
+    overflow: hidden;
+}
+
+.hero .swiper-slide {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-xl) 0;
+}
+/* Animación de entrada para el contenido del slide activo */
+.swiper-slide-active .hero-left > * {
+    animation: fadeInUp 0.8s both;
+}
+.swiper-slide-active .tagline { animation-delay: 0.3s; }
+.swiper-slide-active .hero-title { animation-delay: 0.5s; }
+.swiper-slide-active .hero-lead { animation-delay: 0.7s; }
+.swiper-slide-active .buttons { animation-delay: 0.9s; }
+
+/* Animación de entrada para el contenido del Hero */
+.hero .hero-left > * {
+    animation: fadeInUp 0.8s both;
+}
+.hero .tagline { animation-delay: 0.2s; }
+.hero .hero-title { animation-delay: 0.4s; }
+.hero .hero-lead { animation-delay: 0.6s; }
+.hero .buttons { animation-delay: 0.8s; }
+
+/* HERO CON VIDEO */
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que el video cubra todo el espacio */
+  transform: translate(-50%, -50%);
+  z-index: -2; /* Detrás de todo */
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(9, 13, 27, 0.6); /* Overlay oscuro para legibilidad */
+  z-index: -1; /* Sobre el video, debajo del contenido */
+}
+
+/* ✨ Animación de entrada para secciones */
+.page-section {
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.section-hidden {
+    opacity: 0;
+    transform: translateY(40px);
+}
+/* Fin de animación de entrada */
+
+/* 📐 Responsive */
+@media (max-width: 900px) {
+    .main-nav .nav-list {
+        display: none;
+    }
+    .burger {
+        display: flex;
+    }
+    
+    /* Ajustes para el header en móvil */
+    .site-header .container {
+        padding-left: var(--spacing-md); /* Restauramos el padding del contenedor */
+    }
+    .brand {
+        margin-left: 0; /* Eliminamos el margen negativo */
+    }
+
+    /* Responsive para Hero */
+    .hero-inner {
+        grid-template-columns: 1fr;
+    }
+    .hero-side {
+        margin-top: 20px;
+    }
+
+    /* Fin de ajustes para el header en móvil */
+
+    .mobile-menu {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 300px;
+        height: 100%;
+        background-color: var(--surface);
+        box-shadow: var(--shadow-2);
+        padding: var(--spacing-lg);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateX(100%);
+        z-index: 999; /* Asegura que el menú esté sobre el overlay */
+        transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+    .mobile-menu.show {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(0);
+    }
+    .mobile-menu .nav-list {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+        width: 100%;
+    }
+    .mobile-menu .nav-link {
+        font-size: 18px;
+        padding: 12px 0;
+        width: 100%;
+    }
+    .mobile-menu .submenu {
+        position: static;
+        transform: none;
+        box-shadow: none;
+        /* Ocultamos el submenú por defecto en móvil */
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-in-out;
+        margin-top: 0;
+        background-color: transparent; /* Evita que tenga fondo blanco */
+    }
+    .mobile-menu .submenu.submenu-open {
+        max-height: 200px; /* Altura suficiente para mostrar los items */
+    }
+    .mobile-menu .has-submenu:hover .submenu {
+        /* No hacer nada en hover en móvil */
+    }
+
+    /* Responsive para Misión y Visión */
+    .mision-vision {
+        grid-template-columns: 1fr;
+    }
+}
+
+ .hero-grid {
+    position: relative;
+    z-index: 2;
+ }
+
+ .hero-left {
+    max-width: 650px;
+ }
+
+ .tagline {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-md);
+ }
+
+ .hero-title {
+    /* Ajustes para el contenedor del título tipográfico */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea a la izquierda */
+    gap: 0;
+    line-height: 1.0; /* Juntamos las líneas */
+    font-weight: 700; /* Peso base */
+ }
+
+ .hero-title span {
+    display: block;
+    text-transform: uppercase;
+ }
+
+ .title-line-1 {
+    font-family: 'Josefin Sans', sans-serif; /* Fuente más estilizada */
+    font-weight: 400;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.85); /* Un poco más tenue */
+    margin-bottom: 8px;
+ }
+
+ .title-line-2,
+ .title-line-3 {
+    font-size: clamp(2.8rem, 6vw, 4.2rem); /* Más grande y audaz */
+ }
+
+ .title-line-3 {
+    color: var(--accent); /* Color de acento para la última línea */
+ }
+
+ .hero-title .highlight {
+    color: var(--accent);
+ }
+
+ .hero-lead {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    max-width: 550px;
+ }
+
+ .buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+ }
+
+ .btn {
+    padding: 14px 32px;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+ }
+
+ .btn-primary {
+    background: var(--accent);
+    color: white;
+ }
+ .btn-primary:hover {
+    background: var(--accent-dark);
+    transform: translateY(-2px);
+ }
+
+ .btn-outline {
+    border-color: var(--accent);
+    color: white;
+ }
+ .btn-outline:hover {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-2px);
+ }
+
+/* SOBRE NOSOTROS */
+.page-section h2 { /* Unificado con el estilo anterior */
+    font-size: 28px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-align: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+.page-section h2::after { /* Línea decorativa para títulos de sección */
+    content: "";
+    display: block;
+    width: 80px;
+    height: 4px;
+    background: var(--accent);
+    margin: 8px auto 0; /* Centrado */
+    border-radius: 2px;
+}
+
+/* Botón flotante de donaciones */
+.floating-donate-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--accent);
+    color: white;
+    padding: 16px 32px; /* Hacemos el botón más grande */
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    z-index: 1001; /* Asegura que esté sobre otros elementos */
+    box-shadow: var(--shadow-2); /* Sombra estándar */
+    transition: transform 0.3s ease;
+}
+
+.floating-donate-btn:hover {
+    transform: scale(1.05);
+    animation: color-cycle 2s infinite; /* Aplicamos la animación en hover */
+}
+
+/* Animación de cambio de color */
+@keyframes color-cycle {
+    0%, 100% { background-color: var(--accent); box-shadow: 0 0 20px rgba(229, 36, 35, 0.7); }
+    50% { background-color: var(--accent-dark); box-shadow: 0 0 20px rgba(192, 31, 30, 0.7); }
+}
+
+
+
+/* DECORACIONES */
+.decor-line {
+  width: 90px; height: 4px;
+  background: var(--accent);
+  display: inline-block;
+  border-radius: 2px;
+}
+.decor-box {
+  width: 40px; height: 40px;
+  display: inline-block;
+  margin: 20px 10px 0 0;
+  border-radius: 8px;
+}
+.decor-box { background: var(--accent); }
+.decor-box.alt { background: var(--accent-dark); }
+
+/* Animación para las decoraciones del Hero */
+@keyframes slow-rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Keyframes para la animación de entrada del Hero */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 🎠 CARRUSEL DE PROPÓSITO */
+.purpose-carousel {
+    background-color: var(--surface);
+    border-radius: var(--radius);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-1);
+    min-height: 250px; /* Altura mínima para evitar saltos */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.purpose-slide-content {
+    text-align: center;
+}
+.purpose-slide-content h3 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: var(--spacing-md);
+}
+.purpose-slide-content p {
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem); /* Tamaño de fuente adaptable */
+    font-family: 'Josefin Sans', sans-serif;
+    color: var(--text);
+    line-height: 1.5;
+    max-width: 800px;
+}
+/* 🧑‍🤝‍🧑 NUESTRO EQUIPO */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.team-card {
+    background-color: var(--surface);
+    border-radius: var(--radius);
+    overflow: hidden;
+    text-align: center;
+    box-shadow: var(--shadow-1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-2);
+}
+
+.team-card-image {
+    width: 100%;
+    padding-top: 100%; /* Crea un aspect-ratio de 1:1 */
+    position: relative;
+}
+
+.team-card-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-card-content {
+    padding: var(--spacing-md);
+}
+
+.team-member-name {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.team-member-title {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
